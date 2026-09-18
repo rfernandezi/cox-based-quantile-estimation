@@ -1,7 +1,4 @@
-# =============================================================================
-# Simulation study with right censoring
-# =============================================================================
-#
+# Simulation study with right censoring ---------------------------------------
 # Sensitivity analysis evaluating the performance of Cox-QR under
 # 0%, 20%, and 40% right censoring.
 #
@@ -10,7 +7,6 @@
 #
 # Cox-QR is compared with censored quantile regression using the
 # Peng-Huang and Portnoy methods implemented in the quantreg package.
-# =============================================================================
 
 library(survival)
 library(quantreg)
@@ -23,10 +19,8 @@ set.seed(123)
 taus <- c(0.25, 0.50, 0.75)
 
 
-# -----------------------------------------------------------------------------
-# Right-censoring mechanism
-# -----------------------------------------------------------------------------
 
+# Right-censoring mechanism ---------------------------------------
 # Calibrate the rate of an exponential censoring distribution to obtain
 # approximately the desired censoring proportion.
 calc_lambda_c <- function(Tcal, target_censoring) {
@@ -71,10 +65,8 @@ apply_censoring <- function(event_time, lambda_c) {
 }
 
 
-# -----------------------------------------------------------------------------
-# Censored quantile regression comparators
-# -----------------------------------------------------------------------------
 
+# Censored quantile regression comparators ---------------------------------------
 fit_censored_qr <- function(data, taus, method = "PengHuang",
                             covariate = FALSE) {
   
@@ -119,10 +111,8 @@ fit_censored_qr <- function(data, taus, method = "PengHuang",
 }
 
 
-# -----------------------------------------------------------------------------
-# Helper: generate censored data
-# -----------------------------------------------------------------------------
 
+# Helper: generate censored data ---------------------------------------
 add_censoring <- function(data, target_censoring) {
   
   # No censoring
@@ -148,10 +138,7 @@ add_censoring <- function(data, target_censoring) {
 }
 
 
-# -----------------------------------------------------------------------------
-# Simulation settings
-# -----------------------------------------------------------------------------
-
+# Simulation settings ---------------------------------------
 censoring_levels <- c(0, 0.20, 0.40)
 
 sample_configs <- list(
