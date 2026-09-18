@@ -26,6 +26,12 @@ get_models_I_VI <- function() {
       f0 = function(t) qexp(t, rate = 1),
       f1 = function(t) qexp(t, rate = 1 / 2)
     ),
+    # Model III combines an exponential and a normal distribution.
+    # Since the normal distribution may generate negative values, simulated
+    # outcomes are translated by a common constant before Cox model fitting
+    # when necessary. The estimated quantile effects are then transformed
+    # back to the original outcome scale. This common translation preserves
+    # the ordering of observations and therefore the Cox risk sets.
     list(
       name = "Model III",
       f0 = function(t) qexp(t, rate = 1),
@@ -77,7 +83,12 @@ get_aqe_closed <- function(tau, mu0, sigma0, mu1, sigma1, pi, beta1, beta2, lamb
 # -------------------------------------------------------------------------
 # Returns:
 #   - data-generating mechanism
-#   - true AQE(tau)
+#   - true average quantile effect AQE(tau) = E_Z[beta_1(tau, Z)]
+#
+# In Models VII-B, VII-C, VIII-B, and VIII-C, the distribution of X2
+# depends on treatment status. The true AQE is averaged over the
+# marginal mixture distribution of X2 induced by the treatment
+# allocation probability p.
 
 get_models_VII_VIII <- function(taus, p, lambda = 2, beta1 = 1, beta2 = 0.5) {
   
