@@ -127,8 +127,9 @@ run_models_VII_VIII <- function(n_sim = 2000,
 # -------------------------------------------------------------------------
 # Run simulations
 # -------------------------------------------------------------------------
-
-FAST <- TRUE
+# Set FAST = TRUE for a quick test run (200 Monte Carlo replications).
+# The results reported in the manuscript use FAST = FALSE (2000 replications).
+FAST <- FALSE
 
 if (FAST) {
   n_sim_I_VI <- 200
@@ -138,18 +139,48 @@ if (FAST) {
   n_sim_VII_VIII <- 2000
 }
 
-errors_I_VI <- run_models_I_VI(
-  n_sim = n_sim_I_VI,
-  n = 300,
-  p = 1 / 3,
-  taus = taus,
-  out_file = "simulations/errors_models_I_VI.csv"
+
+# Sample-size configurations used in the manuscript
+sample_configs <- list(
+  size1 = list(n = 100, p = 1 / 2),
+  size2 = list(n = 300, p = 1 / 2),
+  size3 = list(n = 300, p = 1 / 3)
 )
 
-errors_VII_VIII <- run_models_VII_VIII(
-  n_sim = n_sim_VII_VIII,
-  n = 300,
-  p = 1 / 2,
-  taus = taus,
-  out_file = "simulations/errors_models_VII_VIII.csv"
-)
+
+# Models I-VI
+for (config_name in names(sample_configs)) {
+  
+  cfg <- sample_configs[[config_name]]
+  
+  run_models_I_VI(
+    n_sim = n_sim_I_VI,
+    n = cfg$n,
+    p = cfg$p,
+    taus = taus,
+    out_file = paste0(
+      "simulations/errors_models_I_VI_",
+      config_name,
+      ".csv"
+    )
+  )
+}
+
+
+# Models VII-VIII
+for (config_name in names(sample_configs)) {
+  
+  cfg <- sample_configs[[config_name]]
+  
+  run_models_VII_VIII(
+    n_sim = n_sim_VII_VIII,
+    n = cfg$n,
+    p = cfg$p,
+    taus = taus,
+    out_file = paste0(
+      "simulations/errors_models_VII_VIII_",
+      config_name,
+      ".csv"
+    )
+  )
+}
