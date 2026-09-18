@@ -34,7 +34,7 @@ cox_qr_estimate <- function(data, tau) {
     stop("'treatment' must be coded as 0/1.")
   }
   
-  cox_model <- coxph(Surv(event_time, status) ~ treatment, data = data)
+  cox_model <- coxph(Surv(event_time, status) ~ treatment, data = data, ties = "efron")
   
   base_hazard <- basehaz(cox_model, centered = FALSE)
   base_hazard <- base_hazard[order(base_hazard$time), , drop = FALSE]
@@ -100,7 +100,7 @@ cox_qr_estimate_cov <- function(data, tau) {
     stop("'treatment' must be coded as 0/1.")
   }
   
-  cox_model <- coxph(Surv(event_time, status) ~ treatment + X2, data = data)
+  cox_model <- coxph(Surv(event_time, status) ~ treatment + X2, data = data, ties = "efron")
   
   base_hazard <- basehaz(cox_model, centered = FALSE)
   base_hazard <- base_hazard[order(base_hazard$time), , drop = FALSE]
